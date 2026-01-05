@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تمريض منزلي 24 ساعة | محمد جبر</title>
+    <meta name="description" content="خدمات تمريض منزلي واحترافي 24 ساعة – محمد جبر. رعاية كبار السن، حقن، متابعة طبية كاملة.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Cairo',sans-serif;
+            min-height:100vh;
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                        url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size:cover;
+            background-position:center;
+            background-attachment: fixed;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+        .card{
+            width:950px;
+            max-width:100%;
+            background:rgba(255, 255, 255, 0.95);
+            border-radius:25px;
+            overflow:hidden;
+            box-shadow:0 25px 60px rgba(0,0,0,.15);
+            backdrop-filter: blur(5px);
+        }
+        .content{ display:grid; grid-template-columns:320px 1fr; }
+        .left{
+            background:linear-gradient(180deg,#e6f4ff,#cfeaff);
+            padding:40px 30px;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+        }
+        .name{ font-size:3rem; font-weight:900; color:#0b4f7c; line-height:1.1; }
+        .name-en{ margin-top:8px; letter-spacing:2px; color:#3d7fb0; font-size: 0.9rem; }
+        .actions{ display:flex; flex-direction:column; gap:15px; margin-top: 30px; }
+        .btn{
+            text-decoration:none;
+            background:#0b7fc7;
+            color:#fff;
+            padding:15px;
+            border-radius:50px;
+            font-weight:800;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            transition:.3s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn.whatsapp{background:#25d366}
+        .btn:hover{transform: scale(1.02); opacity: 0.9;}
+        .right{ padding:40px; }
+        .services{ display:grid; grid-template-columns:repeat(2,1fr); gap:25px; }
+        .service{
+            background:#fff;
+            border:2px solid #d7ebff;
+            border-radius:20px;
+            padding:25px;
+            text-align:center;
+            cursor:pointer;
+            transition:.3s;
+        }
+        .service:hover{ transform:translateY(-6px); border-color: #0b7fc7; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .service i{ font-size:2.5rem; color:#0b7fc7; margin-bottom:15px; }
+        .service h3{ color:#0b4f7c; margin-bottom:6px; }
+        .footer{
+            margin-top:30px;
+            background:#eaf6ff;
+            border-radius:15px;
+            padding:15px 20px;
+            display:flex;
+            justify-content:space-between;
+            font-weight:800;
+            color:#0b4f7c;
+        }
+        #chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1001; font-family: 'Cairo', sans-serif; }
+        #chat-button {
+            width: 60px; height: 60px; background: #0b7fc7;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        #chat-window {
+            display: none; width: 320px; height: 450px; background: white;
+            position: absolute; bottom: 70px; right: 0; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden;
+        }
+        .chat-header { background: #0b7fc7; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .chat-footer { padding: 10px; display: flex; gap: 5px; border-top: 1px solid #eee; }
+        .chat-footer input { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
+        .chat-footer button { background: #0b7fc7; color: white; border: none; padding: 5px 15px; border-radius: 10px; cursor: pointer; }
+        .msg { padding: 10px; border-radius: 10px; max-width: 80%; font-size: 0.9rem; }
+        .msg.bot { background: #e1f2ff; align-self: flex-start; color: #0b4f7c; }
+        .msg.user { background: #0b7fc7; color: white; align-self: flex-end; }
+        .modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); justify-content:center; align-items:center; z-index:2000; }
+        .modal.active{display:flex}
+        .modal-box{ position:relative; background:#fff; width:90%; max-width:500px; border-radius:25px; padding:35px; animation:pop .3s ease; }
+        .close{ position:absolute; top:15px; left:15px; background:#0b7fc7; color:#fff; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer; }
+        @media(max-width:900px){ .content{grid-template-columns:1fr} .left{text-align: center;} .name{font-size:2.4rem} }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="content">
+        <div class="left">
+            <div>
+                <div class="name">محمد<br>جبر</div>
+                <div class="name-en">MOHAMED GABR <br> Nursing Services</div>
+            </div>
+            <div class="actions">
+                <a href="tel:01208028428" class="btn"><i class="fas fa-phone"></i> 01148858921/01552234886 </a>
+                <a href="https://wa.me/201148858921" target="_blank" class="btn whatsapp"><i class="fab fa-whatsapp"></i> واتساب مباشر</a>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="services">
+                <div class="service" onclick="openModal('m1')"><i class="fas fa-user-nurse"></i><h3>تمريض احترافي</h3><p>طاقم مؤهل وخبرة</p></div>
+                <div class="service" onclick="openModal('m2')"><i class="fas fa-home"></i><h3>تمريض منزلي</h3><p>رعاية داخل المنزل</p></div>
+                <div class="service" onclick="openModal('m3')"><i class="fas fa-syringe"></i><h3>حقن وعلاج</h3><p>أمان وتعقيم</p></div>
+                <div class="service" onclick="openModal('m4')"><i class="fas fa-heartbeat"></i><h3>رعاية كبار السن</h3><p>اهتمام شامل</p></div>
+            </div>
+            <div class="footer">
+                <div>🚑 متاح 24 ساعة</div>
+                <div>صحتكم أمانة</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-widget">
+    <div id="chat-window">
+        <div class="chat-header">
+            <span>المساعد الذكي</span>
+            <span style="cursor:pointer" onclick="toggleChat()">×</span>
+        </div>
+        <div class="chat-body" id="chat-content">
+            <div class="msg bot">أهلاً بك! أنا مساعدك الطبي الآلي. كيف يمكنني مساعدتك اليوم؟ (جرب سؤالي عن الضغط أو السكر)</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="اكتب سؤالك هنا...">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <div id="chat-button" onclick="toggleChat()"><i class="fas fa-comment-medical"></i></div>
+</div>
+
+<div class="modal" id="m1"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2>التمريض الاحترافي</h2><ul><li>طاقم معتمد</li><li>متابعة العلامات الحيوية</li><li>إدارة الأدوية</li></ul></div></div>
+<div class="modal" id="m2"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2>التمريض المنزلي</h2><ul><li>زيارات منزلية</li><li>رعاية ما بعد العمليات</li><li>راحة تامة للمريض</li></ul></div></div>
+<div class="modal" id="m3"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2>الحقن والعلاج</h2><ul><li>حقن وريدية وعضلية</li><li>تعقيم كامل</li><li>متابعة الحالة</li></ul></div></div>
+<div class="modal" id="m4"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2>رعاية كبار السن</h2><ul><li>مساعدة يومية</li><li>دعم نفسي</li><li>متابعة صحية</li></ul></div></div>
+
+<script>
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active')); }
+function toggleChat() {
+    const win = document.getElementById('chat-window');
+    win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+}
+function sendMessage() {
+    const input = document.getElementById('user-input');
+    const text = input.value.trim();
+    if (!text) return;
+    appendMsg(text, 'user'); input.value = '';
+    setTimeout(() => {
+        let response = "عذراً، لست متأكداً. يمكنك التواصل مع الأستاذ محمد جبر مباشرة للاستشارة الدقيقة.";
+        if(text.includes("ضغط")) response = "وفقاً للتوصيات الطبية، المعدل الطبيعي لضغط الدم هو 120/80. إذا كان القياس أعلى من 140/90 بانتظام، يرجى استشارة الطبيب فوراً.";
+        if(text.includes("سكر")) response = "مستوى السكر الصائم الطبيعي بين 70 و 100 ملجم/ديسيلتر. ننصح بمتابعة دورية وجدول غذائي متوازن.";
+        if(text.includes("حرارة")) response = "درجة الحرارة الطبيعية للجسم هي 37 درجة مئوية. إذا تجاوزت 38، يفضل عمل كمادات والتواصل معنا للمتابعة.";
+        if(text.includes("سعر") || text.includes("خدمة")) response = "نقدم خدمات التمريض المنزلي، الحقن، ورعاية كبار السن بأسعار مناسبة. اضغط على زر الاتصال لتفاصيل الأسعار.";
+        appendMsg(response, 'bot');
+    }, 800);
+}
+function appendMsg(text, type) {
+    const content = document.getElementById('chat-content');
+    const div = document.createElement('div');
+    div.className = `msg ${type}`;
+    div.innerText = text;
+    content.appendChild(div);
+    content.scrollTop = content.scrollHeight;
+}
+</script>
+
+</body>
+</html>
